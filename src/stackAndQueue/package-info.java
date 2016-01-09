@@ -10,4 +10,6 @@ package stackAndQueue;
  * 2、由两个栈组成的队列：TwoStackQueue【2】
  * 
  * 3、仅用递归函数和栈逆序一个栈：ReverseStack【2】
+ * 
+ * 4、用栈来求解汉诺塔问题：HanoiStack【3】
  */
