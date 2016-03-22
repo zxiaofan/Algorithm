@@ -79,9 +79,9 @@ public class MaxSubmatrix {
                     } else {
                         result[k] = total[j][k] - total[i - 1][k];
                     }
-                }// 至此，一维数组result存了i到j行的列之和
-                 // 计算i行到j行的最大子矩阵和==>求result的最大子数组和
-                 // (0行到0行最大子数组和-->0行到1行...0行到m行-->1行到1行-->1行到2行...-1行到m行...m行到m行)
+                } // 至此，一维数组result存了i到j行的列之和
+                  // 计算i行到j行的最大子矩阵和==>求result的最大子数组和
+                  // (0行到0行最大子数组和-->0行到1行...0行到m行-->1行到1行-->1行到2行...-1行到m行...m行到m行)
                 int maxt = maxSumDp(result);
                 if (maxt > maxsum) {
                     maxsum = maxt;
@@ -97,7 +97,8 @@ public class MaxSubmatrix {
      * 时间复杂度和空间复杂度均为O(n)
      */
     public static int maxSumDp(int[] arr) {
-        int summax = 0, sumTemp = 0, n = arr.length;
+        // summax应为Integer.MIN_VALUE
+        int summax = Integer.MIN_VALUE, sumTemp = 0, n = arr.length;
         int bestx = 0, besty = 0; // 最优解对应的下标
         for (int i = 0; i < n; i++) {
             if (sumTemp > 0) {// sumtemp>0则继续往下加，否则会让原本为正的子段和变小（加了负的sumtemp）
