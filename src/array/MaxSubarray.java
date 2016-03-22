@@ -11,7 +11,7 @@ package array;
  */
 public class MaxSubarray {
     public static void main(String[] args) {
-        int a[] = {-2, -1, 11, -4, 13, -5, -2, 8};
+        int a[] = {1, 2, -4, 6};
         for (int i : a) {
             System.out.print(i + " ");
         }
@@ -112,7 +112,8 @@ public class MaxSubarray {
                 sumTemp += arr[i];
             } else {// sumtemp<0，表明前部分为负，直接舍弃先前的计算结果，并重新计算
                 sumTemp = arr[i];
-                bestx = i;// 当sumtemp<0时，才更新左下标
+                if (sumTemp > summax)
+                    bestx = i;// 当sumtemp<=0且sumtemp>summax时，才更新左下标
             }
             if (sumTemp > summax) {// 当新的sumtemp更大时，才更新summax
                 summax = sumTemp;
