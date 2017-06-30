@@ -15,4 +15,6 @@ package dp;
 /**
  * 1、走楼梯：TakeStairs
  * 
+ * 2、国王和金矿：KingAndGoldMine
+ * 
  */
