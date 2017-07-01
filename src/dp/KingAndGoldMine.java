@@ -11,7 +11,7 @@ package dp;
 /**
  * 国王和金矿.
  * 
- * https://mp.weixin.qq.com/s/vEUJ7pX3yrFrl69O0QOCwQ
+ * https://mp.weixin.qq.com/s/vEUJ7pX3yrFrl69O0QOCwQ【Note：原文代码有误，此处已更正】
  * 
  * 有一个国家发现了5座金矿，每座金矿的黄金储量不同，需要参与挖掘的工人数也不同。
  * 
@@ -73,5 +73,70 @@ package dp;
  * @author zxiaofan
  */
 public class KingAndGoldMine {
+    public static void main(String[] args) {
+        // 400金/5人；500金/5人；200金/3人；300金/4人；350金/3人。
+        int goldMineNum = 5; // 金矿数量
+        int personNum = 10; // 工人数量
+        int[] golds = {400, 500, 200, 300, 350};
+        int[] personNeeded = {5, 5, 3, 4, 3};
+        int maxGold = getGoldDP(goldMineNum, personNum, golds, personNeeded);
+        System.out.println(goldMineNum + "金矿-" + personNum + "人，最大金矿收益：" + maxGold);
+        // 不同人数和不同金矿数量时的最大收益
+        for (int i = 1; i <= goldMineNum; i++) {
+            for (int j = 1; j <= personNum; j++) {
+                System.out.print(getGoldDP(i, j, golds, personNeeded) + " | ");
+            }
+            System.out.println();
+        }
+    }
 
+    /**
+     * 动态规划求解金矿问题.
+     * 
+     * 时间复杂度是 O(goldMineNum * personNum)，空间复杂度是(personNum)，金矿数量越多，动态规划优势越明显【时空复杂度均与人数成正比】。
+     * 
+     * 当工人数增加（如1000），每个金矿用工数增加，需要计算500次，开辟1000单位的空间。
+     * 
+     * 而用简单递归，需计算2^5=32次，开辟5（递归深度）单位的空间，此时简单递归更有优势。
+     * 
+     * @param goldMineNum
+     *            金矿数量
+     * @param personNum
+     *            工人数量
+     * @param golds
+     *            每座金矿对应的黄金数量
+     * @param personNeeded
+     *            每座金矿所需的工人数量
+     * @return 最优解
+     */
+    static int getGoldDP(int goldMineNum, int personNum, int[] golds, int[] personNeeded) {
+        // 以人为基准
+        int[] preResults = new int[personNum]; // 上一行的最优结果数组 preResults
+        int[] results = new int[personNum]; // 当前行的最优结果数组results
+        // 只有一个金矿，遍历人数
+        for (int i = 1; i <= personNum; i++) {
+            if (personNeeded[0] > i) { // 第1个金矿所需人数>当前人数
+                preResults[i - 1] = 0;
+            } else {
+                preResults[i - 1] = golds[0];
+            }
+        }
+        // 第2座金矿开始计算，外层循环金矿数量，内存循环工人数量
+        for (int i = 1; i < goldMineNum; i++) {
+            for (int j = 1; j <= personNum; j++) {
+                // 当前金矿所需人数>现有人数，取上一金矿的值
+                if (personNeeded[i] > j) {
+                    results[j - 1] = preResults[j - 1];
+                } else if (personNeeded[i] == j) {
+                    // 当前金矿所需人数=现有人数，取上一金矿和当前金矿的最大值
+                    results[j - 1] = Math.max(preResults[j - 1], golds[i]);
+                } else { // 当前金矿所需人数<现有人数
+                    results[j - 1] = Math.max(preResults[j - 1], preResults[j - 1 - personNeeded[i]] + golds[i]);
+                }
+            }
+            preResults = results;
+            results = new int[personNum];
+        }
+        return preResults[personNum - 1];
+    }
 }
